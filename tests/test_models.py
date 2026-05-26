@@ -55,3 +55,15 @@ def test_daily_mean_real_numbers():
 
     # Need to use Numpy testing functions to compare arrays
     npt.assert_array_equal(daily_mean(test_input), test_result)
+
+@pytest.mark.parametrize(
+        "test_input, test_result", 
+        [
+            ([[0,0], [0,0], [0,0]], [0,0]),
+            ([[1,2], [3,4], [5,6]], [3,4])
+        ]
+)
+
+def test_daily_mean(test_input, test_result):
+    """Test that mean function works for both zeroes and integers."""
+    npt.assert_array_equal(daily_mean(test_input), test_result)
