@@ -63,7 +63,7 @@ def test_daily_mean(test_input, test_result):
 
 @pytest.mark.parametrize(
     "test_input, test_result",
-    [([[0, 0], [0, 0], [0, 0]], [0, 0]), ([[1, -2], [3, -4], [5, -6]], [5, -2])],
+   [([[0, 0], [0, 0], [0, 0]], [0, 0]), ([[1, -2], [3, -4], [5, -6]], [5, -2])],
 )
 def test_daily_max(test_input, test_result):
     """Test that "max" function works for both zeroes and integers."""
