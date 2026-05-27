@@ -2,8 +2,8 @@
 """Software for managing and analysing patients' inflammation data in our imaginary hospital."""
 
 import argparse
-
-from inflammation import models, views
+import os
+from inflammation import models, views, analysis
 
 
 def main(args):
@@ -17,8 +17,12 @@ def main(args):
     if not isinstance(in_files, list):
         in_files = [args.infiles]
 
+
+
     for filename in in_files:
-        inflammation_data = models.load_csv(filename)
+        _, extension = os.path.splittext(filename)
+        if extension == ".csv":
+            inflammation_data = models.load_csv(filename)
 
         view_data = {
             "average": models.daily_mean(inflammation_data),
@@ -27,6 +31,14 @@ def main(args):
         }
 
         views.visualize(view_data)
+
+    data_dir = os.path.dirname(in_files[0])                # gives the path to the directory where filename is located
+    _, extension = os.path.splittext(in_files[0])   
+    if extension == ".csv":
+        data_source = analysis.CSVDataSource(data_dir=data_dir)
+    elif extension == ".json":
+        data_source = analysis.CSVDataSource(data_dir=data_dir)
+    data = data_source.load_inflammation_data()
 
 
 if __name__ == "__main__":

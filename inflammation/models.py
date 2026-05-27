@@ -8,6 +8,7 @@ and each column represents a single day across all patients.
 """
 
 import numpy as np
+import json
 
 class Patient:
     def __init__(self, name, weight, height):
@@ -22,7 +23,23 @@ class Patient:
         return self.weight / self.height**2
 
 
-
+def load_json(filename):
+    """Load a numpy array from a JSON document.
+    
+    Expected format:
+    [
+      {
+        "observations": [0, 1]
+      },
+      {
+        "observations": [0, 2]
+      }    
+    ]
+    :param filename: Filename of CSV to load
+    """
+    with open(filename, 'r', encoding='utf-8') as file:
+        data_as_json = json.load(file)
+        return [np.array(entry['observations']) for entry in data_as_json]
 
 def load_csv(filename):  
     """Load a Numpy array from a CSV
