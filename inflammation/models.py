@@ -14,15 +14,18 @@ class Patient:
     def __init__(self, name: str, weight: float, height: float):
         """Patient class
 
-            :param name: Name of patient
-            :param weight: Weight in kilograms
-            :param height: Height in meters
+        :param name: Name of patient
+        :param weight: Weight in kilograms
+        :param height: Height in meters
+        :raises ValueError: If weight or height are not positive numbers.
         """
+        if weight <= 0:
+            raise ValueError("weight must be a positive number")
+        if height <= 0:
+            raise ValueError("height must be a positive number")
         self.name = name
         self.weight = weight
         self.height = height
-        self.bmi = self.get_body_mass_index()
-        pass
 
     def get_body_mass_index(self):
         """ Compute body mass index: weight_in_kg / height_in_meters**2
