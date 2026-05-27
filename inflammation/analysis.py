@@ -8,6 +8,19 @@ import argparse
 
 from inflammation import models, views
 
+
+class CSVDataSource():
+    def __init__(self, path):
+        self.path = path
+        pass
+
+    def load_inflammation_data(self):
+        data_file_paths = glob.glob(os.path.join(self.path, "inflammation*.csv"))
+        if len(data_file_paths) == 0:
+            raise ValueError(f"No inflammation data CSV files found in path {self.path}")
+        data = map(models.load_csv, data_file_paths)
+        return data
+
 def load_inflammation_data(data_dir):
     data_file_paths = glob.glob(os.path.join(data_dir, "inflammation*.csv"))
     if len(data_file_paths) == 0:
@@ -28,7 +41,10 @@ def analyse_data(data_dir):
     #     raise ValueError(f"No inflammation data CSV files found in path {data_dir}")
     # data = map(models.load_csv, data_file_paths)
 
-    data = load_inflammation_data(data_dir)
+    data_source = CSVDataSource(data_dir)
+    data = data_source.load_inflammation_data()
+
+    # data = load_inflammation_data(data_dir)
 
 
     means_by_day = map(models.daily_mean, data)
@@ -37,10 +53,10 @@ def analyse_data(data_dir):
     daily_standard_deviation = np.std(means_by_day_matrix, axis=0)
     # print(daily_standard_deviation)
 
-    graph_data = {
-        'standard deviation by day': daily_standard_deviation,
-    }
-    views.visualize(graph_data)
+    # graph_data = {
+    #     'standard deviation by day': daily_standard_deviation,
+    # }
+    # views.visualize(graph_data)
 
     return daily_standard_deviation
 
