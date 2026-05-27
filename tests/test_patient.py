@@ -33,3 +33,14 @@ def test_is_overweight(name, weight, height, expected):
     """Test that is_overweight returns the correct boolean for various BMI values."""
     patient = Patient(name=name, weight=weight, height=height)
     assert patient.is_overweight() == expected
+
+def test_patient_negative_weight():
+    """Test that creating a patient with non-positive weight raises ValueError."""
+    with pytest.raises(ValueError):
+        Patient(name="Invalid", weight=-5, height=1.7)
+
+
+def test_patient_zero_height():
+    """Test that creating a patient with zero height raises ValueError."""
+    with pytest.raises(ValueError):
+        Patient(name="Invalid", weight=70, height=0)
