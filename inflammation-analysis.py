@@ -20,7 +20,7 @@ def main(args):
 
 
     for filename in in_files:
-        _, extension = os.path.splittext(filename)
+        _, extension = os.path.splitext(filename)
         if extension == ".csv":
             inflammation_data = models.load_csv(filename)
 
@@ -29,15 +29,21 @@ def main(args):
             "max": models.daily_max(inflammation_data),
             "min": models.daily_min(inflammation_data),
         }
-
-        views.visualize(view_data)
+        basename = os.path.basename(filename)
+        outfile = basename.replace('.csv', '.png')
+        if args.outdir:
+            fullpath = os.path.join(args.outdir, outfile)
+            views.visualize(view_data, out_dir=fullpath)
+        else:
+            views.visualize(view_data, None)
 
     data_dir = os.path.dirname(in_files[0])                # gives the path to the directory where filename is located
-    _, extension = os.path.splittext(in_files[0])   
+    _, extension = os.path.splitext(in_files[0]) 
+    # print(data_dir)  
     if extension == ".csv":
-        data_source = analysis.CSVDataSource(data_dir=data_dir)
+        data_source = analysis.CSVDataSource(path=data_dir)
     elif extension == ".json":
-        data_source = analysis.CSVDataSource(data_dir=data_dir)
+        data_source = analysis.JSONDataSource(path=data_dir)
     data = data_source.load_inflammation_data()
 
 
@@ -52,6 +58,16 @@ if __name__ == "__main__":
         help="Input CSV(s) containing inflammation series for each patient",
     )
 
+    parser.add_argument(
+        "-outdir",
+        help="Output directory to save figures",
+    )
+
+
+
+
     args = parser.parse_args()
+
+    # print(args)
 
     main(args)

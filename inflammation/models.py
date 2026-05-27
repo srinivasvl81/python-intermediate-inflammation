@@ -11,7 +11,13 @@ import numpy as np
 import json
 
 class Patient:
-    def __init__(self, name, weight, height):
+    def __init__(self, name: str, weight: float, height: float):
+        """Patient class
+
+            :param name: Name of patient
+            :param weight: Weight in kilograms
+            :param height: Height in meters
+        """
         self.name = name
         self.weight = weight
         self.height = height
@@ -21,6 +27,10 @@ class Patient:
         """ Compute body mass index: weight_in_kg / height_in_meters**2
         """
         return self.weight / self.height**2
+
+    def is_overweight(self):
+        """Return True if patient BMI is above 25, False otherwise."""
+        return self.get_body_mass_index() > 25
 
 
 def load_json(filename):
