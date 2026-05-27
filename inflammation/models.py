@@ -21,6 +21,7 @@ class Patient:
         self.name = name
         self.weight = weight
         self.height = height
+        self.bmi = self.get_body_mass_index()
         pass
 
     def get_body_mass_index(self):
